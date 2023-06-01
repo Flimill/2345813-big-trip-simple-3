@@ -10,7 +10,7 @@ export const html = (strings, ...values) =>
 
     if (value?.isViewConstructor) {
       value = `<${value}></${value}>`;
-    }
+    } else
 
     if (Array.isArray(value)) {
       value = value.join('');

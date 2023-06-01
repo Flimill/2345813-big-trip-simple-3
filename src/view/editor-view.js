@@ -28,6 +28,16 @@ export default class EditorView extends CreatorView {
   }
 
   /**
+   * @override
+   * @param {boolean} flag
+   */
+  display(flag) {
+    (flag ? this.targetView : this).replaceWith(flag ? this : this.targetView);
+
+    return this;
+  }
+
+  /**
    * @param {boolean} flag
    */
   setDeleting(flag) {
@@ -36,18 +46,7 @@ export default class EditorView extends CreatorView {
 
     buttonView.textContent = flag ? DeleteButtonLabel.PRESSED : DeleteButtonLabel.DEFAULT;
 
-    this.setDisabled(flag);
-    this.loaderView.display(flag);
-  }
-
-  /**
-   * @override
-   * @param {boolean} flag
-   */
-  display(flag) {
-    (flag ? this.targetView : this).replaceWith(flag ? this : this.targetView);
-
-    return this;
+    this.setLoading(flag);
   }
 
   onClick(event) {

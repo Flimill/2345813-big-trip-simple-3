@@ -9,17 +9,31 @@ export default class ApplicationModel extends Model {
   #mode;
 
   /**
-   * @param {DataTableModel<Point,PointAdapter>} points
-   * @param {CollectionModel<Destination,DestinationAdapter>} destinations
-   * @param {CollectionModel<OfferGroup,OfferGroupAdapter>} offerGroups
+   * @param {DataTableModel<Point,PointAdapter>} pointsModel
+   * @param {CollectionModel<Destination,DestinationAdapter>} destinationsModel
+   * @param {CollectionModel<OfferGroup,OfferGroupAdapter>} offerGroupsModel
    */
-  constructor(points, destinations, offerGroups) {
+  constructor(pointsModel, destinationsModel, offerGroupsModel) {
     super();
 
-    this.pointsModel = points;
+    this.pointsModel = pointsModel;
+    this.destinationsModel = destinationsModel;
+    this.offerGroupsModel = offerGroupsModel;
     this.activePoint = null;
-    this.destinationsModel = destinations;
-    this.offerGroupsModel = offerGroups;
+  }
+
+  get defaultPoint() {
+    const point = this.pointsModel.blank;
+
+    point.type = PointType.TAXI;
+    point.destinationId = this.destinationsModel.item(0).id;
+    point.startDate = new Date().toJSON();
+    point.endDate = point.startDate;
+    point.basePrice = 0;
+    point.offerIds = [];
+    point.isFavorite = false;
+
+    return point;
   }
 
   /**
@@ -31,21 +45,6 @@ export default class ApplicationModel extends Model {
       this.destinationsModel.ready(),
       this.offerGroupsModel.ready()
     ]);
-  }
-
-  get defaultPoint() {
-    const point = this.pointsModel.blank;
-    const [firstDestination] = this.destinationsModel.listAll();
-
-    point.type = PointType.TAXI;
-    point.destinationId = firstDestination.id;
-    point.startDate = new Date().toJSON();
-    point.endDate = point.startDate;
-    point.basePrice = 0;
-    point.offerIds = [];
-    point.isFavorite = false;
-
-    return point;
   }
 
   getMode() {

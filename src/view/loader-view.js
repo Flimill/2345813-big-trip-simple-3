@@ -5,6 +5,8 @@ export default class LoaderView extends View {
   constructor() {
     super(...arguments);
 
+    this.ownerView = document.body;
+
     this.classList.add('loader');
   }
 
@@ -12,10 +14,22 @@ export default class LoaderView extends View {
    * @override
    * @param {boolean} flag
    */
-  display(flag, ownerView = document.body) {
-    ownerView[flag ? 'append' : 'removeChild'](this);
+  display(flag) {
+    this.ownerView[flag ? 'append' : 'removeChild'](this);
 
     return this;
+  }
+
+  connectCallback() {
+    this.ownerView.addEventListener('keydown', this);
+  }
+
+  disconnectCallback() {
+    this.ownerView.removeEventListener('keydown', this);
+  }
+
+  handleEvent(event) {
+    event.preventDefault();
   }
 }
 

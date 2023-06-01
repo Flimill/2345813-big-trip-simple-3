@@ -8,8 +8,6 @@ export default class PriceInputView extends View {
     this.inputView = this.querySelector('.event__input--price');
 
     this.classList.add('event__field-group', 'event__field-group--price');
-
-    // TODO: валидация через паттерн в html
   }
 
   /**
@@ -24,9 +22,12 @@ export default class PriceInputView extends View {
       <input
         class="event__input  event__input--price"
         id="event-price-1"
-        type="text"
+        type="number"
         name="base_price"
         value=""
+        pattern="[1-9]\d*"
+        min="1"
+        required
       >
     `;
   }

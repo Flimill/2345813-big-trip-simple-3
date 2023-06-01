@@ -29,7 +29,7 @@ const BASE_URL = 'https://18.ecmascript.pages.academy/big-trip';
 const POINTS_URL = `${BASE_URL}/points`;
 const DESTINATIONS_URL = `${BASE_URL}/destinations`;
 const OFFERS_URL = `${BASE_URL}/offers`;
-const AUTH = 'Basic er1183jdzbdw';
+const AUTH = 'Basic er1083jdzbdw';
 
 /** @type {Store<Point>} */
 const pointsStore = new Store(POINTS_URL, AUTH);
@@ -73,7 +73,9 @@ const filterView = document.querySelector(String(FilterView));
 
 const creatorView = new CreatorView().target(listView);
 
-applicationModel.ready().then(() => {
+const initializeApp = async () => {
+  await applicationModel.ready();
+
   new FilterPresenter(applicationModel, filterView);
   new SortPresenter(applicationModel, sortView);
   new ListPresenter(applicationModel, listView);
@@ -81,7 +83,9 @@ applicationModel.ready().then(() => {
   new CreatorPresenter(applicationModel, creatorView);
   new PlaceholderPresenter(applicationModel, placeholderView);
   new CreateButtonPresenter(applicationModel, createButtonView);
-});
+};
+
+initializeApp();
 
 
 const {trace} = console;

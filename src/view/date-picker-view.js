@@ -10,27 +10,25 @@ export default class DatePickerView extends View {
   constructor() {
     super(...arguments);
 
-    // TODO: перенести колбэки в презентер buildView()
-    const onStartDateChange = (selectedDates) =>
-      this.#endDateCalendar.set('minDate', selectedDates[0]);
+    // Запрещает очистку полей с датами с клавиатуры,
+    // подписка на обработчик должна происходить до инициализации flatpickr
+    this.addEventListener('keydown', this.onKeydown.bind(this), true);
 
     /**
      * @type {Calendar}
      */
-    this.#startDateCalendar = initCalendar(
-      this.querySelector('[name="date_from"]'),
-    );
+    this.#startDateCalendar = initCalendar(this.querySelector('[name="date_from"]'));
 
     /**
      * @type {Calendar}
      */
-    this.#endDateCalendar = initCalendar(
-      this.querySelector('[name="date_to"]')
-    );
-
-    this.#startDateCalendar.set('onChange', onStartDateChange);
+    this.#endDateCalendar = initCalendar(this.querySelector('[name="date_to"]'));
 
     this.classList.add('event__field-group', 'event__field-group--time');
+  }
+
+  get disallowedKeys() {
+    return ['Backspace', 'Delete'];
   }
 
   /**
@@ -44,6 +42,7 @@ export default class DatePickerView extends View {
         id="event-start-time-1"
         type="text"
         name="date_from"
+        required
         value=""
       >
       &mdash;
@@ -53,6 +52,7 @@ export default class DatePickerView extends View {
         id="event-end-time-1"
         type="text"
         name="date_to"
+        required
         value=""
       >
     `;
@@ -69,9 +69,11 @@ export default class DatePickerView extends View {
    * @param {CalendarDate} startDate
    * @param {CalendarDate} endDate
    */
-  setDates(startDate, endDate = startDate) {
-    this.#startDateCalendar.setDate(new Date(startDate), true);
-    this.#endDateCalendar.setDate(new Date(endDate), true);
+  setDates(startDate, endDate = startDate, notify = true) {
+    this.#startDateCalendar.setDate(new Date(startDate), notify);
+    this.#endDateCalendar.setDate(new Date(endDate), notify);
+
+    return this;
   }
 
   /**
@@ -83,6 +85,12 @@ export default class DatePickerView extends View {
     this.#endDateCalendar.set(endDateOptions);
 
     return this;
+  }
+
+  onKeydown(event) {
+    if (this.disallowedKeys.includes(event.key)) {
+      event.stopPropagation();
+    }
   }
 
   static configure(options) {

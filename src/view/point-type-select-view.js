@@ -5,7 +5,32 @@ export default class PointTypeSelectView extends RadioGroupView {
     super(...arguments);
 
     this.classList.add('event__type-wrapper');
+
     this.addEventListener('change', this.onChange);
+  }
+
+  /**
+   * @override
+   */
+  getValue() {
+    /** @type {HTMLInputElement} */
+    const checkedInputView = this.querySelector('[type="radio"]:checked');
+
+    return checkedInputView.value;
+  }
+
+  /**
+   * @override
+   * @param {string} type
+   */
+  setValue(type) {
+    super.setValue(type);
+
+    const imgView = this.querySelector('img');
+
+    imgView.src = `img/icons/${type}.png`;
+
+    return this.expand(false);
   }
 
   /**
@@ -47,13 +72,6 @@ export default class PointTypeSelectView extends RadioGroupView {
     `;
   }
 
-  getValue() {
-    /** @type {HTMLInputElement} */
-    const checkedInputView = this.querySelector('[type="radio"]:checked');
-
-    return checkedInputView.value;
-  }
-
   /**
    * @param {[string, string][]} states
    */
@@ -64,19 +82,6 @@ export default class PointTypeSelectView extends RadioGroupView {
       .insertAdjacentHTML('beforeend', templates.join(''));
 
     return this;
-  }
-
-  /**
-   * @param {string} type
-   */
-  setValue(type) {
-    super.setValue(type);
-
-    const imgView = this.querySelector('img');
-
-    imgView.src = `img/icons/${type}.png`;
-
-    return this.expand(false);
   }
 
   expand(flag = true) {
@@ -95,9 +100,7 @@ export default class PointTypeSelectView extends RadioGroupView {
     }
 
     if (type === 'radio') {
-      this
-        .setValue(value)
-        .expand(false);
+      this.setValue(value).expand(false);
     }
   }
 }

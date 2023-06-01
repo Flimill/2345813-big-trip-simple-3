@@ -21,13 +21,14 @@ export default class ListPresenter extends Presenter {
   constructor(...args) {
     super(...args);
 
+    this.updateView();
+
+    this.view.addEventListener('edit', this.onPointViewEdit.bind(this));
+
     this.model.pointsModel.addEventListener(
       ['add', 'update', 'remove', 'filter', 'sort'],
       this.onModelPointsChange.bind(this)
     );
-
-    this.updateView();
-    this.view.addEventListener('point-edit', this.onPointViewEdit.bind(this));
   }
 
   updateView() {
@@ -44,6 +45,7 @@ export default class ListPresenter extends Presenter {
         if (point.offerIds.includes(offer.id)) {
           result.push([offer.title, offer.price]);
         }
+
         return result;
       }, []);
 

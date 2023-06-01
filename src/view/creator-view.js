@@ -41,6 +41,24 @@ export default class CreatorView extends ListItemView {
     this.formView = this.querySelector('form');
   }
 
+  get closeKeys() {
+    return ['Escape', 'Esc'];
+  }
+
+  /**
+   * @override
+   * @param {boolean} flag
+   */
+  display(flag) {
+    if (flag) {
+      this.targetView.prepend(this);
+    } else {
+      this.remove();
+    }
+
+    return this;
+  }
+
   /**
    * @override
    */
@@ -76,7 +94,9 @@ export default class CreatorView extends ListItemView {
   /**
    * @param {boolean} flag
    */
-  setDisabled(flag) {
+  setLoading(flag) {
+    this.loaderView.display(flag);
+
     [...this.formView].forEach((/** @type {HTMLInputElement} */ inputView) => {
       inputView.disabled = flag;
     });
@@ -91,8 +111,7 @@ export default class CreatorView extends ListItemView {
 
     buttonView.textContent = flag ? SaveButtonLabel.PRESSED : SaveButtonLabel.DEFAULT;
 
-    this.setDisabled(flag);
-    this.loaderView.display(flag);
+    this.setLoading(flag);
   }
 
   /**
@@ -100,20 +119,6 @@ export default class CreatorView extends ListItemView {
    */
   target(view) {
     this.targetView = view;
-
-    return this;
-  }
-
-  /**
-   * @override
-   * @param {boolean} flag
-   */
-  display(flag) {
-    if (flag) {
-      this.targetView.prepend(this);
-    } else {
-      this.remove();
-    }
 
     return this;
   }
@@ -142,7 +147,7 @@ export default class CreatorView extends ListItemView {
    * @param {KeyboardEvent} event
    */
   handleEvent(event) {
-    if (event.key?.startsWith('Esc')) {
+    if (this.closeKeys.includes(event?.key)) {
       this.close();
     }
   }

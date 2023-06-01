@@ -8,9 +8,6 @@ export default class CollectionModel extends Model {
   /** @type {Item[]} */
   #items;
 
-  /** @type {Promise<void>} */
-  #ready;
-
   #store;
   #adapt;
 
@@ -32,12 +29,10 @@ export default class CollectionModel extends Model {
   /**
    * @override
    */
-  ready() {
-    this.#ready ??= this.#store.list().then((items) => {
-      this.#items = items;
-    });
-
-    return this.#ready;
+  async ready() {
+    if (!this.#items) {
+      this.#items = await this.#store.list();
+    }
   }
 
   listAll() {

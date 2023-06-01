@@ -1,5 +1,3 @@
-const BAD_REQUEST = 400;
-
 /**
  * @template Item
  */
@@ -70,31 +68,13 @@ export default class Store {
       ...options.headers
     };
     const response = await fetch(url, {...options, headers});
-    const {assert, parse} = /** @type {typeof Store} */(this.constructor);
-
-    await assert(response);
-
-    return parse(response);
-  }
-
-  /**
-   * @param {Response} response
-   */
-  static async assert(response) {
-    if (response.status === BAD_REQUEST) {
-      /**
-       * @type {BadRequestErrorCause}
-       */
-      const data = await response.json();
-
-      throw new Error(data.message, {
-        cause: data.error ?? data.errors
-      });
-    }
+    const {parse} = /** @type {typeof Store} */(this.constructor);
 
     if (!response.ok) {
       throw new Error(response.statusText);
     }
+
+    return parse(response);
   }
 
   /**

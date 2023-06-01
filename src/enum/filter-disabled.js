@@ -1,5 +1,3 @@
-/** @typedef {import('../adapter/point-adapter').default} PointAdapter */
-
 import Enum from './enum.js';
 
 export default class FilterDisabled extends Enum {

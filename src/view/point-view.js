@@ -81,11 +81,7 @@ export default class PointView extends ListItemView {
 
     event.preventDefault();
 
-    this.dispatchEvent(
-      new CustomEvent('point-edit', {
-        bubbles: true,
-      })
-    );
+    this.dispatchEvent(new CustomEvent('edit', {bubbles: true}));
   }
 
   /**

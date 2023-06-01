@@ -12,11 +12,9 @@ export default class EditorPresenter extends CreatorPresenter {
    * @override
    */
   saveActivePoint() {
-    return this.model.pointsModel.update(this.model.activePoint.id, this.model.activePoint);
-  }
+    const {activePoint} = this.model;
 
-  deleteActivePoint() {
-    return this.model.pointsModel.remove(this.model.activePoint.id);
+    return this.model.pointsModel.update(activePoint.id, activePoint);
   }
 
   /**
@@ -31,9 +29,7 @@ export default class EditorPresenter extends CreatorPresenter {
       const pointView = PointView.findById(this.model.activePoint.id);
 
       this.updateView();
-      this.view
-        .target(pointView)
-        .open();
+      this.view.target(pointView).open();
     }
   }
 
@@ -55,5 +51,9 @@ export default class EditorPresenter extends CreatorPresenter {
     }
 
     this.view.setDeleting(false);
+  }
+
+  deleteActivePoint() {
+    return this.model.pointsModel.remove(this.model.activePoint.id);
   }
 }

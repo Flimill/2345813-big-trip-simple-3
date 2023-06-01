@@ -14,11 +14,8 @@ export default class OfferView extends View {
 
   /**
    * @override
-   * @param  {State} state
    */
-  createTemplate(...state) {
-    const [ title, price ] = state;
-
+  createTemplate(title, price) {
     return html`
       <span class="event__offer-title">${title}</span>
       &plus;&euro;&nbsp;

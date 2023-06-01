@@ -20,12 +20,18 @@ export default class SortPresenter extends Presenter {
     this.buildView();
 
     this.view.addEventListener('change', this.onViewChange.bind(this));
-    this.model.pointsModel.addEventListener(['add', 'remove', 'filter'], this.onPointsModelChange.bind(this));
+
+    this.model.pointsModel.addEventListener(
+      ['add', 'remove', 'filter'],
+      this.onPointsModelChange.bind(this)
+    );
   }
 
   buildView() {
     /** @type {[string, string][]} */
-    const options = Object.keys(SortType).map((key) => [SortLabel[key], SortType[key]]);
+    const options = Object.keys(SortType).map(
+      (key) => [SortLabel[key], SortType[key]]
+    );
 
     this.view
       .setOptions(options)

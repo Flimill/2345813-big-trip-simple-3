@@ -40,6 +40,7 @@ export default class PlaceholderPresenter extends Presenter {
   onModelChange() {
     if (this.model.getMode() === Mode.CREATE) {
       this.view.hidden = true;
+
       return;
     }
 
